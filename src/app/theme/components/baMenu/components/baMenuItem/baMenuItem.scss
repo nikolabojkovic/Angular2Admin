@@ -1,0 +1,22 @@
+@import '../../../../sass/conf/conf';
+
+.hide-menu-item {
+    opacity: 0 !important;
+    transition: opacity 0.6s !important;
+}
+
+.show-menu-item {
+    opacity: 1 !important;
+    transition: opacity 1.3s !important;
+}
+
+.hide-toggle-icon-in-menu-item {
+    opacity: 0 !important;
+    transition: opacity 0.3s !important;
+}
+
+.show-toggle-icon-in-menu-item {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity 0.8s cubic-bezier(0, 0, 1, -0.03) !important;
+}

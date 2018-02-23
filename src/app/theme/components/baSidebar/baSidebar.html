@@ -1,0 +1,7 @@
+<aside class="al-sidebar" 
+      [ngClass]="{'collapse-side-bar': isMenuCollapsed, 'expand-side-bar': !isMenuCollapsed}" 
+      sidebarResize>
+  <ba-menu [menuHeight]="menuHeight"
+           [sidebarCollapsed]="isMenuCollapsed"
+           (expandMenu)="menuExpand()"></ba-menu>
+</aside>
