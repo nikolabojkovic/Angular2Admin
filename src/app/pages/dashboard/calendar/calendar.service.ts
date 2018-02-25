@@ -12,7 +12,7 @@ export class CalendarService {
     let dashboardColors = this._baConfig.get().colors.dashboard;
     return {
       header: {
-        left: 'prev,next today',
+        left: 'prevYear,prev today next,nextYear',
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
       },
