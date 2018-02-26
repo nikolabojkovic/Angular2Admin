@@ -20,6 +20,7 @@ import { PagesModule } from './pages/pages.module';
 // Domain part of application
 import { LoginModule } from './domain/login/login.module';
 import { RegisterModule } from './domain/register/register.module';
+import { DomainModule } from './domain/domain.module';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -52,6 +53,7 @@ export type StoreType = {
     PagesModule,
     LoginModule,
     RegisterModule,
+    DomainModule,
     routing
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
