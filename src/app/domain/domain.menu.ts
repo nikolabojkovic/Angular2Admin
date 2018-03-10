@@ -1,9 +1,9 @@
 export const DOMAIN_PAGES_MENU = [
     {
-      path: 'pages',
+      path: 'domain',
       children: [
         {
-          path: 'dashboard',
+          path: 'domain-dashboard',
           data: {
             menu: {
               title: 'general.menu.dashboard',

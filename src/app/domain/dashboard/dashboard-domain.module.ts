@@ -8,6 +8,7 @@ import { DashboardDomainComponent } from './dashboard-domain.component';
 import { routing }       from './dashboard-domain.routing';
 
 import { Calendar } from './calendar';
+import { CalendarModalComponent } from './calendar/calendar-modal/calendar-modal.component';
 
 import { CalendarService } from './calendar/calendar.service';
 
@@ -21,7 +22,11 @@ import { CalendarService } from './calendar/calendar.service';
   ],
   declarations: [
     Calendar,
+    CalendarModalComponent,
     DashboardDomainComponent
+  ],
+  entryComponents: [
+    CalendarModalComponent
   ],
   providers: [
     CalendarService
