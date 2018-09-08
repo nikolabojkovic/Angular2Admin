@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
 import {CalendarService} from './calendar.service';
 
+import { ActionMode } from '../../shared/action-mode.enum';
 @Component({
   selector: 'calendar',
   templateUrl: './calendar.html',
@@ -28,11 +29,11 @@ export class Calendar {
     this._calendar = calendar;
   }
 
+  // add new
   private _onSelect(start, end):void {
 
     if (this._calendar != null) {
-      const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'sm',
-                                                   backdrop: 'static'});
+      const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg', backdrop: 'static'});
       calendarModal.result.then((result) => {
         let title = result;
         let eventData;
@@ -51,10 +52,14 @@ export class Calendar {
     }
   }
 
+  // edit
   private _onEventClick(event, jsEvent, view) {
-    const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'sm',
+    const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg',
                                                  backdrop: 'static'});
     calendarModal.componentInstance.title = event.title;
+    calendarModal.componentInstance.mode = ActionMode.Edit
+    calendarModal.componentInstance.start = event.start;
+    calendarModal.componentInstance.end = event.end;
     calendarModal.result.then((result) => {
       event.title = result;
     jQuery(this._calendar).fullCalendar('updateEvent', event);
