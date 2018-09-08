@@ -1,19 +1,70 @@
 <div class="modal-content">
     <div class="modal-header">
-      <h4 class="modal-title">Calendar</h4>
-      <button class="close" aria-label="Close" (click)="dismiss('close on top')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <h4 class="modal-title">Calendar</h4>
+        <button class="close" aria-label="Close" (click)="dismiss('cancel')">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="title">
-          </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary confirm-btn" (click)="closeModal(title)">Ok</button>
-        <button class="btn btn-default confirm-btn" (click)="dismiss('cancel')">Cancel</button>
+        <div class="form">  
+            <ba-card cardTitle="{{mode == ActionMode.Edit ? 'Edit event': 'Add event'}}" baCardClass="with-scroll">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="title">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea type="text" class="form-control" id="description" placeholder="Description" [(ngModel)]="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="start">Start</label>
+                            <div class="form-control" id="start">{{ start === undefined ? 'None' : start | date }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="end">End</label>
+                            <div class="form-control" id="end">{{ end === undefined ? 'None' : end | date }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="reminder-state">Reminder</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ui-switch id="reminder-state" [(ngModel)]="reminderEnabled" (click)="toggle(reminderElement)"></ui-switch>
+                        </div>
+                    </div>
+                </div>
+                <div id="reminderElement" class="form-group" #reminderElement>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="event-time">Event time</label>
+                            <input class="form-control" type="text" id="event-time"/>
+                        </div>
+                        <div class="col-sm-8">
+                            <label for="reminder-on-time">Remind me</label>
+                            <select class="form-control" id="exampleSelect1">
+                                <option value="0">at time of event</option>
+                                <option value="1">5 min before</option>
+                                <option value="2">10 min before</option>
+                                <option value="3">15 min before</option>
+                                <option value="4">30 min before</option>
+                                <option value="5">1 houre before</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <button class="btn btn-primary confirm-btn" (click)="submit(title)">Ok</button>
+                <button class="btn btn-default confirm-btn margin-left" (click)="dismiss('cancel')">Cancel</button>
+                <button *ngIf="mode == ActionMode.Edit" class="btn btn-danger confirm-btn pull-right" (click)="Delete()">Delete</button>
+            </ba-card>
+        </div>
     </div>
 </div>
   

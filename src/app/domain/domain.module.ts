@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UiSwitchModule } from 'ng2-ui-switch'
 
 import { routing }       from './domain.routing';
 import { NgaModule } from '../theme/nga.module';
@@ -16,7 +17,8 @@ import { DashboardModule } from './dashboard/dashboard.module'
         AppTranslationModule, 
         NgaModule, 
         DashboardModule,
-        routing
+        routing,
+        UiSwitchModule
     ],
     declarations: [
         DomainComponent,        

@@ -3,6 +3,7 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule } from '../../theme/nga.module';
+import { UiSwitchModule } from 'ng2-ui-switch'
 
 import { DashboardComponent } from './dashboard.component';
 import { PieChart } from './pieChart';
@@ -17,7 +18,8 @@ import { PieChartService } from './pieChart/pieChart.service';
     CommonModule,
     FormsModule,
     AppTranslationModule,
-    NgaModule
+    NgaModule,
+    UiSwitchModule
   ],
   declarations: [
     Calendar,
