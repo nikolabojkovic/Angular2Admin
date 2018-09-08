@@ -20,7 +20,6 @@ import { PagesModule } from './pages/pages.module';
 import { LoginModule } from './domain/login/login.module';
 import { RegisterModule } from './domain/register/register.module';
 import { DomainModule } from './domain/domain.module';
-import { PageNotFound } from './domain/page-not-found.component.ts';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -40,8 +39,7 @@ export type StoreType = {
 @NgModule({
   bootstrap: [App],
   declarations: [
-    App,
-    PageNotFound
+    App
   ],
   imports: [ // import Angular's modules
     BrowserModule,

@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { Login } from './domain/login/login.component';
 import { Register } from './domain/register';
-import { PageNotFound } from './domain/page-not-found.component.ts';
+import { PageNotFound } from './domain/page-not-found/index';
 
 export const routes: Routes = [
   { 

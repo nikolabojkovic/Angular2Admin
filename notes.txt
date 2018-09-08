@@ -6,5 +6,6 @@ Find:
 Kill:
 
 kill -9 <PID>
+kill $(lsof -t -i :YOUR_PORT_NUMBER)
 
 ///////////////
