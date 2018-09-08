@@ -6,6 +6,7 @@ import { NgaModule } from '../theme/nga.module';
 import { AppTranslationModule } from '../app.translation.module';
 
 import { DomainComponent } from './domain.component';
+import { PageNotFound } from './page-not-found/page-not-found.component';
 
 import { DashboardModule } from './dashboard/dashboard.module'
 
@@ -17,6 +18,9 @@ import { DashboardModule } from './dashboard/dashboard.module'
         DashboardModule,
         routing
     ],
-    declarations: [DomainComponent]
+    declarations: [
+        DomainComponent,        
+        PageNotFound
+    ]
 })
 export class DomainModule {}
