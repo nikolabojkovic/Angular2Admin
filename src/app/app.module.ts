@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { routing } from './app.routing';
+import { RoutingModule } from './app.routing.module';
 
 // App is our top level component
 import { App } from './app.component';
@@ -17,6 +17,10 @@ import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
 
+// Domain part of application
+import { LoginModule } from './domain/login/login.module';
+import { RegisterModule } from './domain/register/register.module';
+import { DomainModule } from './domain/domain.module';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -47,7 +51,10 @@ export type StoreType = {
     NgaModule.forRoot(),
     NgbModule.forRoot(),
     PagesModule,
-    routing
+    LoginModule,
+    RegisterModule,
+    DomainModule,
+    RoutingModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     APP_PROVIDERS

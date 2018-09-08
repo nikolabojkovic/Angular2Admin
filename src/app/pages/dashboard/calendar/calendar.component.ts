@@ -16,6 +16,7 @@ export class Calendar {
   constructor(private _calendarService:CalendarService) {
     this.calendarConfiguration = this._calendarService.getData();
     this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
+    this.calendarConfiguration.eventClick = (event , jsEvent, view) => this._onEventClick(event, jsEvent, view);
   }
 
   public onCalendarReady(calendar):void {
@@ -37,5 +38,11 @@ export class Calendar {
       }
       jQuery(this._calendar).fullCalendar('unselect');
     }
+  }
+
+  private _onEventClick(event, jsEvent, view) {
+    let title = prompt('Event Title:', event.title);
+    event.title = title;
+    jQuery(this._calendar).fullCalendar('updateEvent', event);
   }
 }

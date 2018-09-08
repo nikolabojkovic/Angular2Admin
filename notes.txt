@@ -1,1 +1,10 @@
 transition: ease-in-out 0.4s;
+
+/////////// if port has been used already:
+Find:
+
+Kill:
+
+kill -9 <PID>
+
+///////////////
