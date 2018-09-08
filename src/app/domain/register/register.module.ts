@@ -4,16 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
 import { Register } from './register.component';
-import { routing }       from './register.routing';
-
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgaModule,
-    routing
+    NgaModule
   ],
   declarations: [
     Register

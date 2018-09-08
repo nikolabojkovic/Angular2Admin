@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { routing } from './app.routing';
+import { RoutingModule } from './app.routing.module';
 
 // App is our top level component
 import { App } from './app.component';
@@ -54,7 +54,7 @@ export type StoreType = {
     LoginModule,
     RegisterModule,
     DomainModule,
-    routing
+    RoutingModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     APP_PROVIDERS

@@ -4,32 +4,33 @@ import { FormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule } from '../../theme/nga.module';
 
-import { DashboardDomainComponent } from './dashboard-domain.component';
-import { routing }       from './dashboard-domain.routing';
-
+import { DashboardComponent } from './dashboard.component';
+import { PieChart } from './pieChart';
 import { Calendar } from './calendar';
 import { CalendarModalComponent } from './calendar/calendar-modal/calendar-modal.component';
 
 import { CalendarService } from './calendar/calendar.service';
+import { PieChartService } from './pieChart/pieChart.service';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     AppTranslationModule,
-    NgaModule,
-    routing
+    NgaModule
   ],
   declarations: [
     Calendar,
     CalendarModalComponent,
-    DashboardDomainComponent
+    DashboardComponent,
+    PieChart
   ],
   entryComponents: [
     CalendarModalComponent
   ],
   providers: [
-    CalendarService
+    CalendarService,
+    PieChartService
   ]
 })
-export class DashboardDomainModule {}
+export class DashboardModule {}

@@ -7,14 +7,14 @@ import { AppTranslationModule } from '../app.translation.module';
 
 import { DomainComponent } from './domain.component';
 
-import { DashboardDomainModule } from './dashboard/dashboard-domain.module'
+import { DashboardModule } from './dashboard/dashboard.module'
 
 @NgModule({
     imports: [
         CommonModule, 
         AppTranslationModule, 
         NgaModule, 
-        DashboardDomainModule,
+        DashboardModule,
         routing
     ],
     declarations: [DomainComponent]
