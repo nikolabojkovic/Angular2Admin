@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { Login } from './domain/login/login.component';
 import { Register } from './domain/register';
+import { PageNotFound } from './domain/page-not-found.component.ts';
 
 export const routes: Routes = [
   { 
@@ -17,8 +18,8 @@ export const routes: Routes = [
     component: Register
   },
   { 
-    path: '**', 
-    redirectTo: 'backoffice', pathMatch: 'full' // redirect to pageNotFound should be implemented here
+    path: '**',
+    component: PageNotFound 
   }
 ];
 

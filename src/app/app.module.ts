@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -21,6 +20,7 @@ import { PagesModule } from './pages/pages.module';
 import { LoginModule } from './domain/login/login.module';
 import { RegisterModule } from './domain/register/register.module';
 import { DomainModule } from './domain/domain.module';
+import { PageNotFound } from './domain/page-not-found.component.ts';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -40,7 +40,8 @@ export type StoreType = {
 @NgModule({
   bootstrap: [App],
   declarations: [
-    App
+    App,
+    PageNotFound
   ],
   imports: [ // import Angular's modules
     BrowserModule,
