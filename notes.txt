@@ -1,5 +1,10 @@
 transition: ease-in-out 0.4s;
 
+// build for production
+npm run clean:dist && ng build --prod --build-optimizer --environment=prod
+
+// defined in package.json file
+npm run build:prod:opt
 /////////// if port has been used already:
 Find:
 
@@ -9,3 +14,8 @@ kill -9 <PID>
 kill $(lsof -t -i :YOUR_PORT_NUMBER)
 
 ///////////////
+
+ng update --all --force
+
+// new ng project with scss styling 
+ng new My_New_Project --style=scss

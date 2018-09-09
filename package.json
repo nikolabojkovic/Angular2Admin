@@ -2,7 +2,7 @@
   "name": "developer-tool.backoffice",
   "version": "1.0.0",
   "description": "Angular and Bootstrap 4 Admin Template.",
-  "author": "Akveo <contact@akveo.com>",
+  "author": "Nikola Bojkovic <nikolabojkovic@gmail.com>",
   "homepage": "https://developer-tool/",
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "start:prod:aot": "ng serve --prod --aot",
     "build": "npm run clean:dist && ng build",
     "build:prod": "npm run build -- --prod",
+    "build:prod:opt": "npm run clean:dist && ng build --prod --build-optimizer --environment=prod",
     "build:prod:aot": "npm run build:prod -- --aot",
     "build:ci": "npm run build:prod && npm run build:prod:aot",
     "build:demo": "npm run build:prod:aot -- --base-href \"/ng2-admin/\"",
@@ -91,7 +92,7 @@
     "zone.js": "0.8.11"
   },
   "devDependencies": {
-    "@angular/cli": "1.0.4",
+    "@angular/cli": "1.2.6",
     "@angular/compiler-cli": "4.1.3",
     "@types/fullcalendar": "2.7.40",
     "@types/jasmine": "2.5.38",
