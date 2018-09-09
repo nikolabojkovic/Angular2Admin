@@ -1,4 +1,4 @@
 export enum ActionMode {
-    Add,
-    Edit
+    Add = 1,
+    Edit = 2
 }
