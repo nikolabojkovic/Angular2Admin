@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+.modal {
+    // when desapear
+    &.show .modal-dialog {
+        transition: 0.2s all;
+        opacity: 0;
+        transform: translate(0, 0);
+    }
+  
+    // when apear
+    &.custom-show .modal-dialog {
+        transition: 0.7s all;
+        opacity: 1;
+        transform: translate(0, 5vh);
+    }
+  }

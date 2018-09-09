@@ -19,3 +19,7 @@ ng update --all --force
 
 // new ng project with scss styling 
 ng new My_New_Project --style=scss
+
+
+// reorder table row and columnd 
+https://www.npmjs.com/package/table-dragger

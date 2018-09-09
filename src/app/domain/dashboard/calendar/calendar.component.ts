@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import * as jQuery from 'jquery';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalService } from '../../shared/services/modal-service';
 
 import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
 import {CalendarService} from './calendar.service';
 
-import { ActionMode } from '../../shared/action-mode.enum';
+import { ActionMode } from '../../shared/enums/action-mode.enum';
 @Component({
   selector: 'calendar',
   templateUrl: './calendar.html',
@@ -18,7 +18,7 @@ export class Calendar {
 
   constructor(
       private _calendarService:CalendarService,
-      private modalService: NgbModal
+      private modalService: ModalService
     ) {
     this.calendarConfiguration = this._calendarService.getData();
     this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
