@@ -12,6 +12,7 @@ import { CalendarModalComponent } from './calendar/calendar-modal/calendar-modal
 
 import { CalendarService } from './calendar/calendar.service';
 import { PieChartService } from './pieChart/pieChart.service';
+import { ModalService } from '../shared/services/modal-service';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { PieChartService } from './pieChart/pieChart.service';
   ],
   providers: [
     CalendarService,
-    PieChartService
+    PieChartService,
+    ModalService
   ]
 })
 export class DashboardModule {}

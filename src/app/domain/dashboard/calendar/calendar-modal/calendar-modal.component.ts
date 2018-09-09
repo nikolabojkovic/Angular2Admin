@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ActionMode } from '../../../shared/action-mode.enum'
+import { ActionMode } from '../../../shared/enums/action-mode.enum'
 
 @Component({
     selector: 'app-calendar-modal',
