@@ -13,6 +13,8 @@ import { CalendarModalComponent } from './calendar/calendar-modal/calendar-modal
 import { CalendarService } from './calendar/calendar.service';
 import { PieChartService } from './pieChart/pieChart.service';
 import { ModalService } from '../shared/services/modal-service';
+import { Todo } from '../../pages/dashboard/todo';
+import { TodoService } from '../../pages/dashboard/todo/todo.service';
 
 @NgModule({
   imports: [
@@ -26,7 +28,8 @@ import { ModalService } from '../shared/services/modal-service';
     Calendar,
     CalendarModalComponent,
     DashboardComponent,
-    PieChart
+    PieChart,
+    Todo
   ],
   entryComponents: [
     CalendarModalComponent
@@ -34,7 +37,8 @@ import { ModalService } from '../shared/services/modal-service';
   providers: [
     CalendarService,
     PieChartService,
-    ModalService
+    ModalService,
+    TodoService
   ]
 })
 export class DashboardModule {}
