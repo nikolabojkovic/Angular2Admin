@@ -24,9 +24,9 @@ export class CalendarModalComponent implements OnInit {
 
     ngOnInit() {
         if (this.reminderEnabled) {
-            jQuery("#reminderElement").slideDown(400);
+            jQuery("#reminderElement").slideDown(0);
         } else {
-            jQuery("#reminderElement").slideUp(400);
+            jQuery("#reminderElement").slideUp(0);
         }
      }
 

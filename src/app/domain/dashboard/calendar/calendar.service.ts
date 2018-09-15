@@ -1,10 +1,21 @@
-import {Injectable} from '@angular/core';
-import {BaThemeConfigProvider} from '../../../theme';
+import { Injectable } from '@angular/core';
+import { BaThemeConfigProvider } from '../../../theme';
+import { HttpService } from '../../shared/services/http.service';
+import { Observable } from 'rxjs';
+
+import { Test } from '../../shared/models/test.model';
 
 @Injectable()
 export class CalendarService {
 
-  constructor(private _baConfig:BaThemeConfigProvider) {
+  constructor(
+    private _baConfig:BaThemeConfigProvider,
+    private httpService: HttpService) {
+  }
+
+  getEvents(): Observable<any> {
+    return this.httpService.get("test")
+                           .map((res: Response) => res.json());
   }
 
   getData() {

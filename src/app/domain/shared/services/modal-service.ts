@@ -9,9 +9,6 @@ export class ModalService {
         let modal = this.ngbModal.open(content, config)
         let instance = (modal as any)._windowCmptRef.instance
         instance.windowClass = 'custom-show'
-        // setImmediate(() => {
-        //     
-        // })
 
         let fx = (modal as any)._removeModalElements.bind(modal);
         (modal as any)._removeModalElements = () => {

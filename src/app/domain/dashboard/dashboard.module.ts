@@ -15,6 +15,7 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { ModalService } from '../shared/services/modal-service';
 import { Todo } from './todo';
 import { TodoService } from './todo/todo.service';
+import { HttpService } from '../shared/services/http.service';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { TodoService } from './todo/todo.service';
     CalendarService,
     PieChartService,
     ModalService,
-    TodoService
+    TodoService,
+    HttpService
   ]
 })
 export class DashboardModule {}

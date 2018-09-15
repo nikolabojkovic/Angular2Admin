@@ -2,6 +2,8 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+//import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+//import { FakeWebApi } from './domain/shared/services/fake-web-api';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /*
@@ -44,8 +46,9 @@ export type StoreType = {
   imports: [ // import Angular's modules
     BrowserModule,
     HttpModule,
-    RouterModule,
+    //InMemoryWebApiModule.forRoot(FakeWebApi), // comment when real api is ready
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     NgaModule.forRoot(),
     NgbModule.forRoot(),

@@ -1,9 +1,12 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import * as jQuery from 'jquery';
 import { ModalService } from '../../shared/services/modal-service';
 
 import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
-import {CalendarService} from './calendar.service';
+import { CalendarService } from './calendar.service';
+
+// replace with real model later
+import { Test } from '../../shared/models/test.model';
 
 import { ActionMode } from '../../shared/enums/action-mode.enum';
 @Component({
@@ -30,7 +33,14 @@ export class Calendar {
   }
 
   // add new
-  private _onSelect(start, end):void {
+  private _onSelect(start, end): void {
+
+    this._calendarService.getEvents().subscribe(data => {
+      data.forEach((element: Test) => {
+        console.log('data ', element.id + ' - ' + element.firstName)
+      });
+    });
+
 
     if (this._calendar != null) {
       const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg', backdrop: 'static'});
