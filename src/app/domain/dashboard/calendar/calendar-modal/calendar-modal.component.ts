@@ -35,7 +35,7 @@ export class CalendarModalComponent implements OnInit {
     }
 
     delete() { 
-        this.activeModal.close(this.event.id);
+        this.activeModal.close( { delete: true, id: this.event.id });
     }
 
     dismiss(reason: any) {

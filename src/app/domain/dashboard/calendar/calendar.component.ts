@@ -79,8 +79,12 @@ export class CalendarComponent implements OnInit {
     calendarModal.componentInstance.event = this.events.find(x => x.id === event.id);
     calendarModal.componentInstance.mode = ActionMode.Edit;
     calendarModal.result.then((result) => {
+      if ( result.delete) {
+        jQuery(this._calendar).fullCalendar('removeEvents', result.id);
+        return;
+      }
       event.title = result.title;
-    jQuery(this._calendar).fullCalendar('updateEvent', event);
+      jQuery(this._calendar).fullCalendar('updateEvent', event);
     }, (reason) => {
       console.log(`Dismissed ${reason}`);
     });     
