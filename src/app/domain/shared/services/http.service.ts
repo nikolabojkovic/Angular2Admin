@@ -14,11 +14,11 @@ export class HttpService {
     }
 
     post(url, data): Observable<any> {
-        return this.http.post(`${environment.apiUrl}${url}`, data, this.headers());
+        return this.http.post(`${environment.apiUrl}${url}`, JSON.stringify(data), this.headers());
     }
 
     put(url, data): Observable<any> {
-        return this.http.put(`${environment.apiUrl}${url}`, data, this.headers());
+        return this.http.put(`${environment.apiUrl}${url}`, JSON.stringify(data), this.headers());
     }
 
     delete(url): Observable<any> {

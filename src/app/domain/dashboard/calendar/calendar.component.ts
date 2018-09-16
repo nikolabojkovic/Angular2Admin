@@ -21,6 +21,9 @@ export class CalendarComponent implements OnInit {
   calendarConfiguration: any;
   events: Event[] = [];
   isLoading = false;
+  isSaving = false;
+  isUpdating = false;
+  isDeleting = false;
 
   constructor(
       private _calendarService: CalendarService,
@@ -68,45 +71,71 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  _onEventResize(event: any, jsEvent: any, view: any): any {
-    const changedEvent = this.events.find(x => x.id === event.id);
-    changedEvent.start = event.start;
-    changedEvent.end = event.end;
-  }
-
-  // add new
   private _onSelect(start, end): void {
     if (this._calendar !== null) {
       const calendarModal = this.modalService.open(CalendarModalComponent, { size: 'lg', backdrop: 'static' });
       calendarModal.result.then((newEvent) => {
-        if (newEvent.title) {
-          newEvent.start = start;
-          newEvent.end = end;
-          jQuery(this._calendar).fullCalendar('renderEvent', newEvent, true);
-          this.events.push(newEvent);
-        }
-        jQuery(this._calendar).fullCalendar('unselect');
+        this.addEvent(start, end, newEvent);
       }, (reason) => {
         console.log(`Dismissed ${reason}`);
       });      
     }
   }
 
-  // edit
   private _onEventClick(event, jsEvent, view) {
     const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg',
                                                  backdrop: 'static'});
-    calendarModal.componentInstance.event = this.events.find(x => x.id === event.id);
+    const modifiedEvent: Event = this.events.find(x => x.id === event.id);
+    calendarModal.componentInstance.event = modifiedEvent;
     calendarModal.componentInstance.mode = ActionMode.Edit;
     calendarModal.result.then((result) => {
-      if ( result.delete) {
-        jQuery(this._calendar).fullCalendar('removeEvents', result.id);
+      if (result.delete) {
+        this.deleteEvent(result.id);
         return;
       }
-      event.title = result.title;
-      jQuery(this._calendar).fullCalendar('updateEvent', event);
+
+      this.updateEvent(event, modifiedEvent);
     }, (reason) => {
       console.log(`Dismissed ${reason}`);
     });     
+  }
+
+  private _onEventResize(event: any, jsEvent: any, view: any): any {
+    const modifiedEvent = this.events.find(x => x.id === event.id);
+    modifiedEvent.start = event.start;
+    modifiedEvent.end = event.end;
+    this.updateEvent(event, modifiedEvent);
+  }
+
+  private addEvent(start: any, end: any, newEvent: Event) {
+    this.isSaving = true;
+    newEvent.id = Math.max(...this.events.map(x => x.id)) + 1;
+    newEvent.start = start;
+    newEvent.end = end;
+
+    this._calendarService.saveEvent(newEvent).subscribe(() =>  { 
+      jQuery(this._calendar).fullCalendar('renderEvent', newEvent, true);
+      this.events.push(newEvent);
+      this.isSaving = false;
+    });          
+    jQuery(this._calendar).fullCalendar('unselect');
+  }
+
+  private updateEvent(calendarEvent: any, modifiedEvent: Event) {
+    this.isUpdating = true;
+    calendarEvent.title = modifiedEvent.title;
+    this._calendarService.saveEvent(modifiedEvent).subscribe(() => {
+      jQuery(this._calendar).fullCalendar('updateEvent', calendarEvent);
+      this.isUpdating = false;
+    });
+  }
+
+  private deleteEvent(id: any) {
+    this.isDeleting = true;
+    this._calendarService.deleteEvent(id).subscribe(() => {
+      jQuery(this._calendar).fullCalendar('removeEvents', id);
+      this.events = this.events.filter(x => x.id !== id);
+      this.isDeleting = false;
+    });    
   }
 }

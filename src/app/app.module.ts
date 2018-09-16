@@ -48,7 +48,7 @@ export type StoreType = {
     HttpModule,
     InMemoryWebApiModule.forRoot(FakeWebApi, {
       passThruUnknownUrl: true,
-     // delay: 2500
+      // delay: 3500
     }), // comment when real api is ready
     FormsModule,
     RouterModule,

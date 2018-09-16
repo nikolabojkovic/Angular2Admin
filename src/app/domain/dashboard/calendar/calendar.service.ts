@@ -4,6 +4,7 @@ import { HttpService } from '../../shared/services/http.service';
 import { Observable } from 'rxjs';
 
 import { DateHelper } from '../../shared/helpers/date.helper';
+import { Event } from '../../shared/models/event.model';
 
 @Injectable()
 export class CalendarService {
