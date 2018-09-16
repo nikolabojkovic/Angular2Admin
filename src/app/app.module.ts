@@ -2,10 +2,10 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-//import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { FakeWebApi } from './domain/shared/services/fake-web-api';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { FakeWebApi } from './domain/shared/services/fake-web-api';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -46,7 +46,9 @@ export type StoreType = {
   imports: [ // import Angular's modules
     BrowserModule,
     HttpModule,
-    //InMemoryWebApiModule.forRoot(FakeWebApi), // comment when real api is ready
+    InMemoryWebApiModule.forRoot(FakeWebApi, {
+      passThruUnknownUrl: true
+    }), // comment when real api is ready
     FormsModule,
     RouterModule,
     ReactiveFormsModule,

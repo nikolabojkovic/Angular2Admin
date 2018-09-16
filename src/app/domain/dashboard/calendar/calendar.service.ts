@@ -14,7 +14,7 @@ export class CalendarService {
   }
 
   getEvents(): Observable<any> {
-    return this.httpService.get("test")
+    return this.httpService.get("events")
                            .map((res: Response) => res.json());
   }
 

@@ -7,6 +7,7 @@ import { CalendarService } from './calendar.service';
 
 // replace with real model later
 import { Test } from '../../shared/models/test.model';
+import { Event } from '../../shared/models/event.model';
 
 import { ActionMode } from '../../shared/enums/action-mode.enum';
 @Component({
@@ -35,9 +36,11 @@ export class Calendar {
   // add new
   private _onSelect(start, end): void {
 
-    this._calendarService.getEvents().subscribe(data => {
-      data.forEach((element: Test) => {
-        console.log('data ', element.id + ' - ' + element.firstName)
+    this._calendarService.getEvents().subscribe(result => {
+      result.data.forEach((element: Test) => {
+        let event = Event.fromObject(element);
+        console.log('data ', event.id + ' - ' + event.title + ' - ' + event.description)
+        console.log('object', event)
       });
     });
 
