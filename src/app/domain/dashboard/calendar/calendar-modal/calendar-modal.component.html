@@ -10,21 +10,21 @@
             <ba-card cardTitle="{{mode == ActionMode.Edit ? 'Edit event': 'Add event'}}" baCardClass="with-scroll">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="title">
+                    <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="event.title">
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea type="text" class="form-control" id="description" placeholder="Description" [(ngModel)]="description"></textarea>
+                    <textarea type="text" class="form-control" id="description" placeholder="Description" [(ngModel)]="event.description"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6">
                             <label for="start">Start</label>
-                            <div class="form-control" id="start">{{ start === undefined ? 'None' : start | date }}</div>
+                            <div class="form-control" id="start">{{ event.start === undefined ? 'None' : event.start | date }}</div>
                         </div>
                         <div class="col-sm-6">
                             <label for="end">End</label>
-                            <div class="form-control" id="end">{{ end === undefined ? 'None' : end | date }}</div>
+                            <div class="form-control" id="end">{{ event.end === undefined ? 'None' : event.end | date }}</div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <ui-switch id="reminder-state" [(ngModel)]="reminderEnabled" (click)="toggle(reminderElement)"></ui-switch>
+                            <ui-switch id="reminder-state" [(ngModel)]="event.reminderEnabled" (click)="toggle(reminderElement)"></ui-switch>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="event-time">Event time</label>
-                            <input class="form-control" type="text" id="event-time"/>
+                            <input class="form-control" type="text" id="event-time" [(ngModel)]="event.reminderTime"/>
                         </div>
                         <div class="col-sm-8">
                             <label for="reminder-on-time">Remind me</label>
@@ -60,9 +60,9 @@
                     </div>
                     
                 </div>
-                <button class="btn btn-primary confirm-btn" (click)="submit(title)">Ok</button>
+                <button class="btn btn-primary confirm-btn" (click)="submit()">Ok</button>
                 <button class="btn btn-default confirm-btn margin-left" (click)="dismiss('cancel')">Cancel</button>
-                <button *ngIf="mode == ActionMode.Edit" class="btn btn-danger confirm-btn pull-right" (click)="Delete()">Delete</button>
+                <button *ngIf="mode == ActionMode.Edit" class="btn btn-danger confirm-btn pull-right" (click)="delete()">Delete</button>
             </ba-card>
         </div>
     </div>

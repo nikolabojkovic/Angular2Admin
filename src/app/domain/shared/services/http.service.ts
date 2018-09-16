@@ -9,7 +9,7 @@ export class HttpService {
 
     constructor(private http: Http) { }
 
-    get(url): Observable<any>{
+    get(url): Observable<any> {
         return this.http.get(`${environment.apiUrl}${url}`);
     }
 
@@ -25,14 +25,14 @@ export class HttpService {
         return this.http.delete(`${environment.apiUrl}${url}`, this.headers());
     }
 
-    private headers(){
-        let headers = new Headers();
+    private headers() {
+        const headers = new Headers();
         headers.append('Access-Control-Allow-Origin', environment.frontEndUrl);
         headers.append('Accept', 'application/json');
         headers.append('Content-Type', 'application/json');
 
         // TODO: add user toke for retistration if needed
 
-        return new RequestOptions({headers: headers});
+        return new RequestOptions({ headers: headers });
     }
 }

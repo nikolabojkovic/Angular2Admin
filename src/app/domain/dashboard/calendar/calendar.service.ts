@@ -9,18 +9,30 @@ import { Test } from '../../shared/models/test.model';
 export class CalendarService {
 
   constructor(
-    private _baConfig:BaThemeConfigProvider,
+    private _baConfig: BaThemeConfigProvider,
     private httpService: HttpService) {
   }
 
   getEvents(): Observable<any> {
-    return this.httpService.get("events")
+    return this.httpService.get('events')
                            .map((res: Response) => res.json());
   }
 
-  getData() {
+  saveEvent(event: Event): Observable<any> {
+    return this.httpService.post('events', event);
+  }
 
-    let dashboardColors = this._baConfig.get().colors.dashboard;
+  updateEvent(event: Event): Observable<any> {
+    return this.httpService.put('events', event);
+  }
+
+  deleteEvent(id: any): Observable<any> {
+    return this.httpService.delete(`events/${id}`);
+  }
+
+  getData(events: any) {
+
+    const dashboardColors = this._baConfig.get().colors.dashboard;
     return {
       header: {
         left: 'prevYear,prev today next,nextYear',
@@ -32,29 +44,30 @@ export class CalendarService {
       selectHelper: true,
       editable: true,
       eventLimit: true,
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2016-03-01',
-          color: dashboardColors.silverTree
-        },
-        {
-          title: 'Long Event',
-          start: '2016-03-07',
-          end: '2016-03-10',
-          color: dashboardColors.blueStone
-        },
-        {
-          title: 'Dinner',
-          start: '2016-03-14T20:00:00',
-          color: dashboardColors.surfieGreen
-        },
-        {
-          title: 'Birthday Party',
-          start: '2016-04-01T07:00:00',
-          color: dashboardColors.gossip
-        }
-      ]
+      events: events
+      // [
+        // {
+        //   title: 'All Day Event',
+        //   start: '2016-03-01',
+        //   color: dashboardColors.silverTree
+        // },
+        // {
+        //   title: 'Long Event',
+        //   start: '2016-03-07',
+        //   end: '2016-03-10',
+        //   color: dashboardColors.blueStone
+        // },
+        // {
+        //   title: 'Dinner',
+        //   start: '2016-03-14T20:00:00',
+        //   color: dashboardColors.surfieGreen
+        // },
+        // {
+        //   title: 'Birthday Party',
+        //   start: '2016-04-01T07:00:00',
+        //   color: dashboardColors.gossip
+        // }
+      // ]
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as jQuery from 'jquery';
 import { ModalService } from '../../shared/services/modal-service';
 
@@ -13,50 +13,57 @@ import { ActionMode } from '../../shared/enums/action-mode.enum';
 @Component({
   selector: 'calendar',
   templateUrl: './calendar.html',
-  styleUrls: ['./calendar.scss']
+  styleUrls: ['./calendar.scss'],
 })
-export class Calendar {
+export class CalendarComponent implements OnInit {
 
-  public calendarConfiguration:any;
-  private _calendar:Object;
+  private _calendar: Object;
+  calendarConfiguration: any;
+  events: Event[] = [];
+  isLoading = false;
 
   constructor(
-      private _calendarService:CalendarService,
+      private _calendarService: CalendarService,
       private modalService: ModalService
-    ) {
-    this.calendarConfiguration = this._calendarService.getData();
-    this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
-    this.calendarConfiguration.eventClick = (event , jsEvent, view) => this._onEventClick(event, jsEvent, view);
+    ) { }
+
+  ngOnInit(): void {
+    this.isLoading = true;
+    this._calendarService.getEvents().subscribe(result => {
+      result.data.forEach((element: Test) => {
+        const event = Event.fromObject(element);
+        this.events.push(event);
+        console.log('object', event);
+      });
+
+      this.calendarConfiguration = this._calendarService.getData(this.events);
+      this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
+      this.calendarConfiguration.eventClick = (event , jsEvent, view) => this._onEventClick(event, jsEvent, view);
+      this.calendarConfiguration.eventResize = (event , jsEvent, view) => this._onEventResize(event, jsEvent, view);
+      this.isLoading = false;    
+    });
+    
+  }
+  _onEventResize(event: any, jsEvent: any, view: any): any {
+    const changedEvent = this.events.find(x => x.id === event.id);
+    changedEvent.start = event.start;
+    changedEvent.end = event.end;
   }
 
-  public onCalendarReady(calendar):void {
+  onCalendarReady(calendar): void {
     this._calendar = calendar;
   }
 
   // add new
   private _onSelect(start, end): void {
-
-    this._calendarService.getEvents().subscribe(result => {
-      result.data.forEach((element: Test) => {
-        let event = Event.fromObject(element);
-        console.log('data ', event.id + ' - ' + event.title + ' - ' + event.description)
-        console.log('object', event)
-      });
-    });
-
-
-    if (this._calendar != null) {
-      const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg', backdrop: 'static'});
-      calendarModal.result.then((result) => {
-        let title = result;
-        let eventData;
-        if (title) {
-          eventData = {
-            title: title,
-            start: start,
-            end: end
-          };
-          jQuery(this._calendar).fullCalendar('renderEvent', eventData, true);
+    if (this._calendar !== null) {
+      const calendarModal = this.modalService.open(CalendarModalComponent, { size: 'lg', backdrop: 'static' });
+      calendarModal.result.then((newEvent) => {
+        if (newEvent.title) {
+          newEvent.start = start;
+          newEvent.end = end;
+          jQuery(this._calendar).fullCalendar('renderEvent', newEvent, true);
+          this.events.push(newEvent);
         }
         jQuery(this._calendar).fullCalendar('unselect');
       }, (reason) => {
@@ -69,12 +76,10 @@ export class Calendar {
   private _onEventClick(event, jsEvent, view) {
     const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg',
                                                  backdrop: 'static'});
-    calendarModal.componentInstance.title = event.title;
-    calendarModal.componentInstance.mode = ActionMode.Edit
-    calendarModal.componentInstance.start = event.start;
-    calendarModal.componentInstance.end = event.end;
+    calendarModal.componentInstance.event = this.events.find(x => x.id === event.id);
+    calendarModal.componentInstance.mode = ActionMode.Edit;
     calendarModal.result.then((result) => {
-      event.title = result;
+      event.title = result.title;
     jQuery(this._calendar).fullCalendar('updateEvent', event);
     }, (reason) => {
       console.log(`Dismissed ${reason}`);
