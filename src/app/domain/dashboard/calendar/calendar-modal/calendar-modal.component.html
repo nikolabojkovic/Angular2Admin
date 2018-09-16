@@ -48,13 +48,8 @@
                         </div>
                         <div class="col-sm-8">
                             <label for="reminder-on-time">Remind me</label>
-                            <select class="form-control" id="exampleSelect1">
-                                <option value="0">at time of event</option>
-                                <option value="1">5 min before</option>
-                                <option value="2">10 min before</option>
-                                <option value="3">15 min before</option>
-                                <option value="4">30 min before</option>
-                                <option value="5">1 houre before</option>
+                            <select class="form-control" id="exampleSelect1" [(ngModel)]="event.reminderTimeOffset" >
+                                <option *ngFor="let offset of timeOffsetToArray()" [value]="offset">{{ toString(offset) }}</option>
                             </select>
                         </div>
                     </div>

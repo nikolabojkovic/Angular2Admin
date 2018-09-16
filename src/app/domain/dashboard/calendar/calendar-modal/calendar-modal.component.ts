@@ -3,6 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ActionMode } from '../../../shared/enums/action-mode.enum';
 import { Event } from '../../../shared/models/event.model';
+import { ReminderTimeOffset, 
+         toString as reminderTimeOffsetToString,
+         toArray as reminderTimeOffsetToArray } from '../../../shared/enums/reminder-time-offset.enum';
 
 @Component({
     selector: 'app-calendar-modal',
@@ -11,18 +14,22 @@ import { Event } from '../../../shared/models/event.model';
 })
 export class CalendarModalComponent implements OnInit {
 
-    mode: ActionMode;
     event: Event;
 
+    reminderTimeOffset: ReminderTimeOffset;
+    mode: ActionMode;
+
     ActionMode: typeof ActionMode = ActionMode;
+    ReminderTimeOffset: typeof ReminderTimeOffset = ReminderTimeOffset;
 
     constructor(private activeModal: NgbActiveModal) { }
 
     ngOnInit() {
         if (this.event === undefined) {
-            this.event = Event.fromObject({});
+            this.event = Event.fromObject({ reminderTimeOffset: ReminderTimeOffset.AtTimeOfEvent });
         }
 
+        console.log('test', this.event);
         if (this.event.reminderEnabled) {
             jQuery('#reminderElement').slideDown(0);
         } else {
@@ -35,7 +42,7 @@ export class CalendarModalComponent implements OnInit {
     }
 
     delete() { 
-        this.activeModal.close( { delete: true, id: this.event.id });
+        this.activeModal.close({ delete: true, id: this.event.id });
     }
 
     dismiss(reason: any) {
@@ -48,5 +55,13 @@ export class CalendarModalComponent implements OnInit {
         } else {
             jQuery(element).slideUp(400);
         }
+    }
+
+    toString(type: ReminderTimeOffset): string {
+        return reminderTimeOffsetToString(type);
+    }
+
+    timeOffsetToArray(): any {
+        return reminderTimeOffsetToArray();
     }
 }
