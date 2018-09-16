@@ -27,31 +27,51 @@ export class CalendarComponent implements OnInit {
       private modalService: ModalService
     ) { }
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this._calendarService.getEvents().subscribe(result => {
-      result.data.forEach((element: Test) => {
-        const event = Event.fromObject(element);
-        this.events.push(event);
-        console.log('object', event);
-      });
-
-      this.calendarConfiguration = this._calendarService.getData(this.events);
-      this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
-      this.calendarConfiguration.eventClick = (event , jsEvent, view) => this._onEventClick(event, jsEvent, view);
-      this.calendarConfiguration.eventResize = (event , jsEvent, view) => this._onEventResize(event, jsEvent, view);
-      this.isLoading = false;    
-    });
-    
-  }
-  _onEventResize(event: any, jsEvent: any, view: any): any {
-    const changedEvent = this.events.find(x => x.id === event.id);
-    changedEvent.start = event.start;
-    changedEvent.end = event.end;
+  ngOnInit(): void {      
+    this.calendarConfiguration = this._calendarService.getMetaData();
+    this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
+    this.calendarConfiguration.eventClick = (event , jsEvent, view) => this._onEventClick(event, jsEvent, view);
+    this.calendarConfiguration.eventResize = (event , jsEvent, view) => this._onEventResize(event, jsEvent, view);     
   }
 
   onCalendarReady(calendar): void {
     this._calendar = calendar;
+    this.fatchEvents();
+
+    const ctrl = this;
+    // does not catch this line for some reason
+    jQuery(this._calendar).fullCalendar({
+      events: function(start, end, timezone, callback) {
+        ctrl._calendarService.getEvents().subscribe(result => {
+          result.data.forEach((element: Test) => {
+            const event = Event.fromObject(element);
+            ctrl.events.push(event);
+          });
+          callback(ctrl.events);
+        });
+      }
+    });
+  }
+
+  fatchEvents() {
+    this.isLoading = true;
+    this.events = [];
+    this._calendarService.getEvents().subscribe(result => {
+      result.data.forEach((element: Test) => {
+        const event = Event.fromObject(element);
+        this.events.push(event);
+      });   
+
+      jQuery(this._calendar).fullCalendar('removeEvents');
+      jQuery(this._calendar).fullCalendar('addEventSource', this.events);
+      this.isLoading = false; 
+    });
+  }
+
+  _onEventResize(event: any, jsEvent: any, view: any): any {
+    const changedEvent = this.events.find(x => x.id === event.id);
+    changedEvent.start = event.start;
+    changedEvent.end = event.end;
   }
 
   // add new

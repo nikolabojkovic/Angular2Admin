@@ -1,1 +1,5 @@
-<ba-full-calendar *ngIf="!isLoading" [baFullCalendarConfiguration]="calendarConfiguration" baFullCalendarClass="blurCalendar" (onCalendarReady)="onCalendarReady($event)"></ba-full-calendar>
+<span *ngIf="isLoading" class="loader">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Loading
+</span>
+<ba-full-calendar [baFullCalendarConfiguration]="calendarConfiguration" baFullCalendarClass="blurCalendar" (onCalendarReady)="onCalendarReady($event)"></ba-full-calendar>
+<!-- <button (click)="fatchEvents()">Referesh events</button> -->

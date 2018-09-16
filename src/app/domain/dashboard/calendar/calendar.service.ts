@@ -3,7 +3,7 @@ import { BaThemeConfigProvider } from '../../../theme';
 import { HttpService } from '../../shared/services/http.service';
 import { Observable } from 'rxjs';
 
-import { Test } from '../../shared/models/test.model';
+import { DateHelper } from '../../shared/helpers/date.helper';
 
 @Injectable()
 export class CalendarService {
@@ -30,7 +30,7 @@ export class CalendarService {
     return this.httpService.delete(`events/${id}`);
   }
 
-  getData(events: any) {
+  getMetaData() {
 
     const dashboardColors = this._baConfig.get().colors.dashboard;
     return {
@@ -39,12 +39,12 @@ export class CalendarService {
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
       },
-      defaultDate: '2016-03-08',
+      defaultDate: DateHelper.formatDate(new Date()),
       selectable: true,
       selectHelper: true,
       editable: true,
-      eventLimit: true,
-      events: events
+      eventLimit: true
+      // events: events
       // [
         // {
         //   title: 'All Day Event',
