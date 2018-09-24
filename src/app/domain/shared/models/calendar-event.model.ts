@@ -1,6 +1,6 @@
 import { ReminderTimeOffset } from "../enums/reminder-time-offset.enum";
 
-export class Event {
+export class CalendarEvent {
     id: number;
     color: any;
     title: string;
@@ -25,8 +25,8 @@ export class Event {
         this.reminderTimeOffset = reminderTimeOffset;
     }
 
-    static fromObject(data: any): Event {
-        return new Event (data.id, data.color, data.title, data.description,
+    static fromObject(data: any): CalendarEvent {
+        return new CalendarEvent (data.id, data.color, data.title, data.description,
                           data.start, data.end, data.reminderEnabled,
                           data.reminderTime, data.reminderTimeOffset);
     }

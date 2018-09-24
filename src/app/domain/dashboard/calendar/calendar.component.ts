@@ -7,7 +7,7 @@ import { CalendarService } from './calendar.service';
 
 // replace with real model later
 import { Test } from '../../shared/models/test.model';
-import { Event } from '../../shared/models/event.model';
+import { CalendarEvent } from '../../shared/models/calendar-event.model';
 
 import { ActionMode } from '../../shared/enums/action-mode.enum';
 @Component({
@@ -19,7 +19,7 @@ export class CalendarComponent implements OnInit {
 
   private _calendar: Object;
   calendarConfiguration: any;
-  events: Event[] = [];
+  events: CalendarEvent[] = [];
   isLoading = false;
   isSaving = false;
   isUpdating = false;
@@ -47,7 +47,7 @@ export class CalendarComponent implements OnInit {
       events: function(start, end, timezone, callback) {
         ctrl._calendarService.getEvents().subscribe(result => {
           result.data.forEach((element: Test) => {
-            const event = Event.fromObject(element);
+            const event = CalendarEvent.fromObject(element);
             ctrl.events.push(event);
           });
           callback(ctrl.events);
@@ -61,7 +61,7 @@ export class CalendarComponent implements OnInit {
     this.events = [];
     this._calendarService.getEvents().subscribe(result => {
       result.data.forEach((element: Test) => {
-        const event = Event.fromObject(element);
+        const event = CalendarEvent.fromObject(element);
         this.events.push(event);
       });   
 
@@ -85,8 +85,8 @@ export class CalendarComponent implements OnInit {
   private _onEventClick(event, jsEvent, view) {
     const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg',
                                                  backdrop: 'static'});
-    const modifiedEvent: Event = this.events.find(x => x.id === event.id);
-    calendarModal.componentInstance.event = modifiedEvent;
+    const modifiedEvent: CalendarEvent = this.events.find(x => x.id === event.id);
+    calendarModal.componentInstance.calendarEvent = modifiedEvent;
     calendarModal.componentInstance.mode = ActionMode.Edit;
     calendarModal.result.then((result) => {
       if (result.delete) {
@@ -107,7 +107,7 @@ export class CalendarComponent implements OnInit {
     this.updateEvent(event, modifiedEvent);
   }
 
-  private addEvent(start: any, end: any, newEvent: Event) {
+  private addEvent(start: any, end: any, newEvent: CalendarEvent) {
     this.isSaving = true;
     newEvent.id = Math.max(...this.events.map(x => x.id)) + 1;
     newEvent.start = start;
@@ -121,7 +121,7 @@ export class CalendarComponent implements OnInit {
     jQuery(this._calendar).fullCalendar('unselect');
   }
 
-  private updateEvent(calendarEvent: any, modifiedEvent: Event) {
+  private updateEvent(calendarEvent: any, modifiedEvent: CalendarEvent) {
     this.isUpdating = true;
     calendarEvent.title = modifiedEvent.title;
     this._calendarService.saveEvent(modifiedEvent).subscribe(() => {

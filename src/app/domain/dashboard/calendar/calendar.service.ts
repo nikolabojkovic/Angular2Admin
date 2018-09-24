@@ -4,7 +4,7 @@ import { HttpService } from '../../shared/services/http.service';
 import { Observable } from 'rxjs';
 
 import { DateHelper } from '../../shared/helpers/date.helper';
-import { Event } from '../../shared/models/event.model';
+import { CalendarEvent } from '../../shared/models/calendar-event.model';
 
 @Injectable()
 export class CalendarService {
@@ -19,11 +19,11 @@ export class CalendarService {
                            .map((res: Response) => res.json());
   }
 
-  saveEvent(event: Event): Observable<any> {
+  saveEvent(event: CalendarEvent): Observable<any> {
     return this.httpService.post('events', event);
   }
 
-  updateEvent(event: Event): Observable<any> {
+  updateEvent(event: CalendarEvent): Observable<any> {
     return this.httpService.put('events', event);
   }
 

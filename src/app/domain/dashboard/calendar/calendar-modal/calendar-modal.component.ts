@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ActionMode } from '../../../shared/enums/action-mode.enum';
-import { Event } from '../../../shared/models/event.model';
+import { CalendarEvent } from '../../../shared/models/calendar-event.model';
 import { ReminderTimeOffset, 
          toString as reminderTimeOffsetToString,
          toArray as reminderTimeOffsetToArray } from '../../../shared/enums/reminder-time-offset.enum';
@@ -14,7 +14,7 @@ import { ReminderTimeOffset,
 })
 export class CalendarModalComponent implements OnInit {
 
-    event: Event;
+    calendarEvent: CalendarEvent;
 
     reminderTimeOffset: ReminderTimeOffset;
     mode: ActionMode;
@@ -25,12 +25,12 @@ export class CalendarModalComponent implements OnInit {
     constructor(private activeModal: NgbActiveModal) { }
 
     ngOnInit() {
-        if (this.event === undefined) {
-            this.event = Event.fromObject({ reminderTimeOffset: ReminderTimeOffset.AtTimeOfEvent });
+        if (this.calendarEvent === undefined) {
+            this.calendarEvent = CalendarEvent.fromObject({ reminderTimeOffset: ReminderTimeOffset.AtTimeOfEvent });
         }
 
-        console.log('test', this.event);
-        if (this.event.reminderEnabled) {
+        console.log('test', this.calendarEvent);
+        if (this.calendarEvent.reminderEnabled) {
             jQuery('#reminderElement').slideDown(0);
         } else {
             jQuery('#reminderElement').slideUp(0);
@@ -38,11 +38,11 @@ export class CalendarModalComponent implements OnInit {
      }
 
     submit() {
-        this.activeModal.close(this.event);
+        this.activeModal.close(this.calendarEvent);
     }
 
     delete() { 
-        this.activeModal.close({ delete: true, id: this.event.id });
+        this.activeModal.close({ delete: true, id: this.calendarEvent.id });
     }
 
     dismiss(reason: any) {
@@ -50,7 +50,7 @@ export class CalendarModalComponent implements OnInit {
     }
 
     toggle(element: Element) {
-        if (this.event.reminderEnabled) {
+        if (this.calendarEvent.reminderEnabled) {
             jQuery(element).slideDown(400);
         } else {
             jQuery(element).slideUp(400);
