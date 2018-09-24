@@ -30,7 +30,7 @@ export class CalendarModalComponent implements OnInit {
         }
 
         console.log('test', this.calendarEvent);
-        if (this.calendarEvent.reminderEnabled) {
+        if (this.calendarEvent.isReminderEnabled) {
             jQuery('#reminderElement').slideDown(0);
         } else {
             jQuery('#reminderElement').slideUp(0);
@@ -50,7 +50,7 @@ export class CalendarModalComponent implements OnInit {
     }
 
     toggle(element: Element) {
-        if (this.calendarEvent.reminderEnabled) {
+        if (this.calendarEvent.isReminderEnabled) {
             jQuery(element).slideDown(400);
         } else {
             jQuery(element).slideUp(400);

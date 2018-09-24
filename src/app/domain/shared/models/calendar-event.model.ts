@@ -7,7 +7,7 @@ export class CalendarEvent {
     description: string;
     start: Date;
     end: Date;
-    reminderEnabled: boolean;
+    isReminderEnabled: boolean;
     reminderTime: Date;
     reminderTimeOffset: ReminderTimeOffset;
 
@@ -20,7 +20,7 @@ export class CalendarEvent {
         this.description = description;
         this.start = start;
         this.end = end;
-        this.reminderEnabled = reminderEnabled;
+        this.isReminderEnabled = reminderEnabled;
         this.reminderTime = reminderTime;
         this.reminderTimeOffset = reminderTimeOffset;
     }
