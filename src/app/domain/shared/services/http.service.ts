@@ -10,7 +10,7 @@ export class HttpService {
     constructor(private http: Http) { }
 
     get(url): Observable<any> {
-        return this.http.get(`${environment.apiUrl}${url}`);
+        return this.http.get(`${environment.apiUrl}${url}`, this.headers());
     }
 
     post(url, data): Observable<any> {

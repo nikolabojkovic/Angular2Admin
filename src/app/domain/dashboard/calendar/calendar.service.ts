@@ -9,26 +9,29 @@ import { CalendarEvent } from '../../shared/models/calendar-event.model';
 @Injectable()
 export class CalendarService {
 
+//  private calendarEventsEndPoint = 'calendartestevents';
+  private calendarEventsEndPoint = 'calendar/events';
+
   constructor(
     private _baConfig: BaThemeConfigProvider,
     private httpService: HttpService) {
   }
 
   getEvents(): Observable<any> {
-    return this.httpService.get('events')
+    return this.httpService.get(this.calendarEventsEndPoint)
                            .map((res: Response) => res.json());
   }
 
   saveEvent(event: CalendarEvent): Observable<any> {
-    return this.httpService.post('events', event);
+    return this.httpService.post(this.calendarEventsEndPoint, event);
   }
 
   updateEvent(event: CalendarEvent): Observable<any> {
-    return this.httpService.put('events', event);
+    return this.httpService.put(`${this.calendarEventsEndPoint}/${event.id}`, event);
   }
 
   deleteEvent(id: any): Observable<any> {
-    return this.httpService.delete(`events/${id}`);
+    return this.httpService.delete(`${this.calendarEventsEndPoint}/${id}`);
   }
 
   getMetaData() {

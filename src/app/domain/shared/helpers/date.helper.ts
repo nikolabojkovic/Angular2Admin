@@ -14,4 +14,8 @@ export class DateHelper {
     
         return [year, month, day].join('-');
     }
+
+    static toDateOnly(date: Date) {
+        return new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate());
+    }
 }

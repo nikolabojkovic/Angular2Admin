@@ -4,6 +4,7 @@ import { FormsModule }          from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule }            from '../../theme/nga.module';
 import { UiSwitchModule }       from 'ng2-ui-switch';
+import { NgbTimepickerModule, NgbDatepickerModule }  from '@ng-bootstrap/ng-bootstrap';
 
 import { DashboardComponent }     from './dashboard.component';
 import { PieChart }               from './pieChart';
@@ -23,7 +24,9 @@ import { HttpService }     from '../shared/services/http.service';
     FormsModule,
     AppTranslationModule,
     NgaModule,
-    UiSwitchModule
+    UiSwitchModule,
+    NgbTimepickerModule,
+    NgbDatepickerModule,
   ],
   declarations: [
     CalendarComponent,

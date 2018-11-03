@@ -1,4 +1,4 @@
-import { ReminderTimeOffset } from "../enums/reminder-time-offset.enum";
+import { Reminder } from "./reminder.model";
 
 export class CalendarEvent {
     id: number;
@@ -7,27 +7,21 @@ export class CalendarEvent {
     description: string;
     start: Date;
     end: Date;
-    isReminderEnabled: boolean;
-    reminderTime: Date;
-    reminderTimeOffset: ReminderTimeOffset;
+    reminder: Reminder;
 
     constructor(id: number, color: any, title: string, description: string,
-                start: Date, end: Date, reminderEnabled: boolean,
-                reminderTime: Date, reminderTimeOffset: ReminderTimeOffset) {
+                start: Date, end: Date, reminder: Reminder) {
         this.id = id;
         this.color = color;
         this.title = title;
         this.description = description;
         this.start = start;
-        this.end = end;
-        this.isReminderEnabled = reminderEnabled;
-        this.reminderTime = reminderTime;
-        this.reminderTimeOffset = reminderTimeOffset;
+        this.end = end; 
+        this.reminder = reminder;
     }
 
     static fromObject(data: any): CalendarEvent {
         return new CalendarEvent (data.id, data.color, data.title, data.description,
-                          data.start, data.end, data.reminderEnabled,
-                          data.reminderTime, data.reminderTimeOffset);
+                          data.start, data.end, data.reminder);
     }
 }

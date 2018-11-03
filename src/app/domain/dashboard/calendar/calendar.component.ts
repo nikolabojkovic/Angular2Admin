@@ -6,10 +6,10 @@ import { CalendarModalComponent } from './calendar-modal/calendar-modal.componen
 import { CalendarService } from './calendar.service';
 
 // replace with real model later
-import { Test } from '../../shared/models/test.model';
 import { CalendarEvent } from '../../shared/models/calendar-event.model';
 
 import { ActionMode } from '../../shared/enums/action-mode.enum';
+import { DateHelper } from '../../shared/helpers/date.helper';
 @Component({
   selector: 'calendar',
   templateUrl: './calendar.html',
@@ -46,7 +46,7 @@ export class CalendarComponent implements OnInit {
     jQuery(this._calendar).fullCalendar({
       events: function(start, end, timezone, callback) {
         ctrl._calendarService.getEvents().subscribe(result => {
-          result.data.forEach((element: Test) => {
+          result.data.forEach((element: CalendarEvent) => {
             const event = CalendarEvent.fromObject(element);
             ctrl.events.push(event);
           });
@@ -60,8 +60,10 @@ export class CalendarComponent implements OnInit {
     this.isLoading = true;
     this.events = [];
     this._calendarService.getEvents().subscribe(result => {
-      result.data.forEach((element: Test) => {
+      result.data.forEach((element: CalendarEvent) => {
         const event = CalendarEvent.fromObject(element);
+        // event.start = DateHelper.toDateOnly(event.start);
+        // event.end = DateHelper.toDateOnly(event.end);
         this.events.push(event);
       });   
 
@@ -74,6 +76,7 @@ export class CalendarComponent implements OnInit {
   private _onSelect(start, end): void {
     if (this._calendar !== null) {
       const calendarModal = this.modalService.open(CalendarModalComponent, { size: 'lg', backdrop: 'static' });
+      calendarModal.componentInstance.setCalendarEvent(CalendarEvent.fromObject({ start, end }));
       calendarModal.result.then((newEvent) => {
         this.addEvent(start, end, newEvent);
       }, (reason) => {
@@ -86,7 +89,7 @@ export class CalendarComponent implements OnInit {
     const calendarModal = this.modalService.open(CalendarModalComponent, {size: 'lg',
                                                  backdrop: 'static'});
     const modifiedEvent: CalendarEvent = this.events.find(x => x.id === event.id);
-    calendarModal.componentInstance.calendarEvent = modifiedEvent;
+    calendarModal.componentInstance.setCalendarEvent(modifiedEvent);
     calendarModal.componentInstance.mode = ActionMode.Edit;
     calendarModal.result.then((result) => {
       if (result.delete) {
@@ -94,7 +97,7 @@ export class CalendarComponent implements OnInit {
         return;
       }
 
-      this.updateEvent(event, modifiedEvent);
+      this.updateEvent(event, result);
     }, (reason) => {
       console.log(`Dismissed ${reason}`);
     });     
@@ -114,6 +117,8 @@ export class CalendarComponent implements OnInit {
     newEvent.end = end;
 
     this._calendarService.saveEvent(newEvent).subscribe(() =>  { 
+      // newEvent.start = DateHelper.toDateOnly(newEvent.start);
+      // newEvent.end = DateHelper.toDateOnly(newEvent.end);
       jQuery(this._calendar).fullCalendar('renderEvent', newEvent, true);
       this.events.push(newEvent);
       this.isSaving = false;
@@ -124,8 +129,12 @@ export class CalendarComponent implements OnInit {
   private updateEvent(calendarEvent: any, modifiedEvent: CalendarEvent) {
     this.isUpdating = true;
     calendarEvent.title = modifiedEvent.title;
-    this._calendarService.saveEvent(modifiedEvent).subscribe(() => {
+    this._calendarService.updateEvent(modifiedEvent).subscribe(() => {
+      // calendarEvent.start = DateHelper.toDateOnly(calendarEvent.start);
+      // calendarEvent.end = DateHelper.toDateOnly(calendarEvent.end);
       jQuery(this._calendar).fullCalendar('updateEvent', calendarEvent);
+      this.events = this.events.filter(x => x.id !== calendarEvent.id);
+      this.events.push(modifiedEvent);
       this.isUpdating = false;
     });
   }

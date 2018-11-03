@@ -25,6 +25,7 @@
     "build": "npm run clean:dist && ng build",
     "build:prod": "npm run build -- --prod",
     "build:prod:opt": "npm run clean:dist && ng build --prod --build-optimizer --environment=prod",
+    "build:test:opt": "npm run clean:dist && ng build --prod --build-optimizer --environment=test",
     "build:prod:aot": "npm run build:prod -- --aot",
     "build:ci": "npm run build:prod && npm run build:prod:aot",
     "build:demo": "npm run build:prod:aot -- --base-href \"/ng2-admin/\"",
