@@ -1,14 +1,29 @@
 <div class="modal-content">
     <div class="modal-body">
-        <div class="form">  
+        <form class="form" [formGroup]="form">  
             <ba-card cardTitle="{{mode == ActionMode.Edit ? 'Edit event': 'Add event'}}" baCardClass="with-scroll">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Title" [(ngModel)]="calendarEvent.title">
+                <div class="form-group"> 
+                    <div class="with-error-indicator">
+                        <label for="title">Title</label>
+                        <input id="title"
+                                type="text" 
+                                placeholder="Title"
+                                class="form-control fadable-border-color"  
+                                formControlName="title"
+                                maxlength="50"
+                                [ngClass]="{'error': form.controls['title'].errors?.required && isTitleTouched }"
+                                (keyup)="onTitleKeyup()"
+                                (ngModelChange)="onTitleChange($event)"> <i class="fa fa-exclamation-circle fadable-opacity" 
+                                                                            aria-hidden="true"
+                                                                            [ngClass]="{ 'fade-in': form.controls['title'].errors?.required  && isTitleTouched,
+                                                                                         'fade-out': !form.controls['title'].errors?.required && isTitleTouched }"></i>
+                        <i class="error-block fadable-opacity" [ngClass]="{ 'fade-in': form.controls['title'].errors?.required  && isTitleTouched,
+                                                                            'fade-out': !form.controls['title'].errors?.required && isTitleTouched }">{{ error.title }}</i> 
+                    </div>          
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea type="text" class="form-control" id="description" placeholder="Description" [(ngModel)]="calendarEvent.description"></textarea>
+                    <label for="description">Description <i>(Optional)</i></label>
+                    <textarea type="text" class="form-control" id="description" placeholder="Description" formControlName="description"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -39,7 +54,7 @@
                             </div>
                         </div> -->
                         <div class="col-sm-6">
-                            <label for="start">Start</label>
+                            <label for="start">Start</label> <i *ngIf="error?.start" class="fa fa-exclamation-circle" aria-hidden="true"></i>
                             <div class="form-control" id="start">{{ calendarEvent.start === undefined ? 'None' : calendarEvent.start | date }}</div>
                         </div>
                         <div class="col-sm-6">
@@ -48,37 +63,52 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label for="reminder-state">Reminder</label>
+                <div formGroupName="reminder">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="reminder-state">{{ 'calendar_events.remind_me' | translate }}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ui-switch id="reminder-state" formControlName="isActive" (click)="toggle(reminderElement, 400)"></ui-switch>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <ui-switch id="reminder-state" [(ngModel)]="reminder.active" (click)="toggle(reminderElement, 400)"></ui-switch>
+                    <div id="reminderElement" class="form-group" #reminderElement>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="with-error-indicator">
+                                    <label for="event-time">Event time</label>
+                                    <ngb-timepicker formControlName="eventTime" id="event-time"></ngb-timepicker>
+                                    <i class="fa fa-exclamation-circle fadable-opacity" 
+                                        aria-hidden="true"
+                                        style="top: 77px; right: 94px;"
+                                        [ngClass]="{ 'fade-in': !isReminderTimeValid,
+                                                    'fade-out': isReminderTimeValid }"></i>
+                                    <i class="error-block fadable-opacity"
+                                       style="top: 133px !important"
+                                       [ngClass]="{ 'fade-in': !isReminderTimeValid,
+                                                    'fade-out': isReminderTimeValid }">
+                                                                            {{ error.invalidTime }}
+                                                                        </i>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <label for="reminder-on-time">Remind me</label>
+                                <select class="form-control" id="reimder-time-offset" formControlName="timeOffset" >
+                                    <option *ngFor="let offset of timeOffsetToArray()" [value]="offset">{{ toString(offset) }}</option>
+                                </select>
+                            </div>                       
                         </div>
-                    </div>
+                    </div> 
                 </div>
-                <div id="reminderElement" class="form-group" #reminderElement>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <label for="event-time">Event time</label>
-                            <ngb-timepicker [(ngModel)]="timeModel" id="event-time"></ngb-timepicker>
-                        </div>
-                        <div class="col-sm-8">
-                            <label for="reminder-on-time">Remind me</label>
-                            <select class="form-control" id="reimder-time-offset" [(ngModel)]="reminder.timeOffset" >
-                                <option *ngFor="let offset of timeOffsetToArray()" [value]="offset">{{ toString(offset) }}</option>
-                            </select>
-                        </div>                        
-                    </div>
-                </div>
-                <button class="btn btn-primary confirm-btn" (click)="submit()">Ok</button>
+                <button class="btn btn-primary confirm-btn" [disabled]="!form.valid" (click)="submit()">Ok</button>
                 <button class="btn btn-default confirm-btn margin-left" (click)="dismiss('cancel')">Cancel</button>
                 <button *ngIf="mode == ActionMode.Edit" class="btn btn-danger confirm-btn pull-right" (click)="delete()">Delete</button>
             </ba-card>
-        </div>
+        </form>
     </div>
 </div>
   

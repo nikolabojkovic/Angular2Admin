@@ -18,4 +18,12 @@ export class DateHelper {
     static toDateOnly(date: Date) {
         return new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate());
     }
+
+    static toUTCDate(date: Date): Date {
+        return new Date(Date.UTC(date.getFullYear(), 
+                                 date.getMonth(), 
+                                 date.getDate(), 
+                                 date.getHours(), 
+                                 date.getMinutes()));
+    }
 }
