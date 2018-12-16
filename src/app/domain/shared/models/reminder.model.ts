@@ -1,5 +1,4 @@
 import { ReminderTimeOffset } from "../enums/reminder-time-offset.enum";
-import { Time } from "./time";
 
 export class Reminder {
     id: number;

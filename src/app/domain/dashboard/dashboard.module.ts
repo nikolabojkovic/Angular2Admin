@@ -1,6 +1,6 @@
 import { NgModule }             from '@angular/core';
 import { CommonModule }         from '@angular/common';
-import { FormsModule }          from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule }            from '../../theme/nga.module';
 import { UiSwitchModule }       from 'ng2-ui-switch';
@@ -27,6 +27,7 @@ import { HttpService }     from '../shared/services/http.service';
     UiSwitchModule,
     NgbTimepickerModule,
     NgbDatepickerModule,
+    ReactiveFormsModule
   ],
   declarations: [
     CalendarComponent,

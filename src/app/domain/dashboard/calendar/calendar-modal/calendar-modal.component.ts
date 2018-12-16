@@ -1,4 +1,4 @@
-import { Component, OnInit, Query } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ActionMode } from '../../../shared/enums/action-mode.enum';
@@ -8,6 +8,8 @@ import { ReminderTimeOffset,
          toArray as reminderTimeOffsetToArray } from '../../../shared/enums/reminder-time-offset.enum';
 import { Reminder } from '../../../shared/models/reminder.model';
 import { Time } from '../../../shared/models/time';
+import { FormControl, Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DateHelper } from 'app/domain/shared/helpers/date.helper';
 
 @Component({
     selector: 'app-calendar-modal',
@@ -18,41 +20,134 @@ export class CalendarModalComponent implements OnInit {
 
     calendarEvent: CalendarEvent;
     reminder: Reminder;
+    error: any = {};
 
     startDateModel: any;
     endDateModel: any;
-    timeModel: Time;
+    reminderTimeModel: Time;
 
-    reminderTimeOffset: ReminderTimeOffset;
-    mode: ActionMode;
+    isTitleTouched: boolean;
+    isReminderTimeValid: boolean;
+
+    form: FormGroup;
+    mode: ActionMode;    
 
     ActionMode: typeof ActionMode = ActionMode;
     ReminderTimeOffset: typeof ReminderTimeOffset = ReminderTimeOffset;
 
-    constructor(private activeModal: NgbActiveModal) { }
+    constructor(private activeModal: NgbActiveModal, private fb: FormBuilder) { }
 
     ngOnInit() {
+        this.initModels();        
+        this.createForm();
+        this.setForm();
+        this.toggle(document.querySelector('#reminderElement'), 0);
+        document.querySelector('[aria-label="Hours"]').classList.add('fadable-border-color');
+        document.querySelector('[aria-label="Minutes"]').classList.add('fadable-border-color');
+    }
+
+    initModels(): void {
         if (this.calendarEvent === undefined) {
+            // if 'Add' set to default values
             this.calendarEvent = CalendarEvent.fromObject({ });
             this.reminder = Reminder.default();
+            this.reminderTimeModel = Time.fromObject({
+                hour: new Date().getHours(),
+                minute: new Date().getMinutes(),
+                second: new Date().getSeconds()
+            });
         } else {
+            // if 'Edit' set from recieved object
             this.calendarEvent = CalendarEvent.fromObject(this.calendarEvent);
-            if (this.calendarEvent.reminder === undefined || this.calendarEvent.reminder === null) {
+            if (this.IsNotSet(this.calendarEvent.reminder)) {
                 this.reminder = Reminder.default();
-                this.timeModel = Time.fromObject({});
+                this.reminderTimeModel = Time.fromObject({
+                    hour: new Date().getHours(),
+                    minute: new Date().getMinutes(),
+                    second: new Date().getSeconds()
+                });
             } else {
                 this.reminder = Reminder.fromObject(this.calendarEvent.reminder);
-                this.timeModel = Time.fromObject(
+                this.reminderTimeModel = Time.fromObject(
                     { 
-                        hour: new Date(this.reminder.time).getHours(),
-                        minute: new Date(this.reminder.time).getMinutes(),
-                        second: new Date(this.reminder.time).getSeconds()
+                        hour: this.reminder.time.getHours(),
+                        minute: this.reminder.time.getMinutes(),
+                        second: this.reminder.time.getSeconds()
                     });
             }
         }
+    }
 
-        this.toggle(document.querySelector('#reminderElement'), 0);
-     }
+    createForm() {
+        const ctrlFrom = this.form;
+        this.form = this.fb.group({
+            title: new FormControl('', Validators.required),
+            description: new FormControl(''),
+            reminder: this.fb.group({
+                isActive: new FormControl(false),
+                eventTime: new FormControl('', null),
+                timeOffset: new FormControl('')
+            })           
+        }, {
+            validator: this.reminderTimeValidator.bind(this)
+        });
+    }
+
+    reminderTimeValidator(group: FormGroup) {
+        const value = group.value.reminder.eventTime;
+
+        if (!group.value.reminder.isActive) {
+            this.isReminderTimeValid = true;
+            return null;
+        }
+    
+        if (!value) {
+          this.error.invalidTime = 'Reminder time is required';
+          this.isReminderTimeValid = false;
+          document.querySelector('[aria-label="Hours"]').classList.add('error');
+          document.querySelector('[aria-label="Minutes"]').classList.add('error');
+          return { invalidTime: true };
+        }
+    
+        document.querySelector('[aria-label="Hours"]').classList.remove('error');
+        document.querySelector('[aria-label="Minutes"]').classList.remove('error');
+        this.isReminderTimeValid = true;
+        return null;
+      }
+
+    setForm(): void {
+        if (!this.calendarEvent) {
+            return;
+        }
+
+        this.form.setValue({
+            title: this.calendarEvent.title ? this.calendarEvent.title : '',
+            description: this.calendarEvent.description ? this.calendarEvent.description : '',
+            reminder: {
+                isActive: this.calendarEvent.reminder ? this.calendarEvent.reminder.active : false,
+                eventTime: this.reminderTimeModel,
+                timeOffset: this.reminder.timeOffset
+            }
+        });
+    }
+
+    getForm(): void {
+        const event = this.form.value;
+        this.calendarEvent.title = event.title;
+        this.calendarEvent.description = event.description;
+
+        this.reminder.active = event.reminder.isActive;   
+        if (this.reminder.active) {
+            this.reminderTimeModel = Time.fromObject(event.reminder.eventTime);
+            this.reminder.time = new Date(this.calendarEvent.start);
+            this.reminder.time.setHours(this.reminderTimeModel.hour);
+            this.reminder.time.setMinutes(this.reminderTimeModel.minute);
+            this.reminder.time.setSeconds(this.reminderTimeModel.second);
+            this.reminder.timeOffset = event.reminder.timeOffset;
+        }
+
+        this.calendarEvent.reminder = this.reminder;
+    }
 
     setCalendarEvent(calendareEvent) {
         this.calendarEvent = calendareEvent;
@@ -70,19 +165,13 @@ export class CalendarModalComponent implements OnInit {
     }
 
     submit() {
-        if (this.reminder.active) {
-            this.reminder.time = new Date(this.calendarEvent.start);
-            this.reminder.time.setHours(this.timeModel.hour);
-            this.reminder.time.setMinutes(this.timeModel.minute);
-            this.reminder.time.setSeconds(this.timeModel.second);
-            this.calendarEvent.reminder = this.reminder;
-        }
+        this.getForm();
 
-        // exists but disabled - save state
-        if (this.calendarEvent.reminder && this.calendarEvent.reminder.active !== this.reminder.active) {
-            this.calendarEvent.reminder.active = this.reminder.active;
+        // convert dateTime to utc dateTime
+        if (this.calendarEvent.reminder.time) {
+            this.calendarEvent.reminder.time = DateHelper.toUTCDate(this.calendarEvent.reminder.time);
         }
-
+        
         this.activeModal.close(this.calendarEvent);
     }
 
@@ -95,7 +184,7 @@ export class CalendarModalComponent implements OnInit {
     }
 
     toggle(element: Element, duration: number) {
-        if (this.reminder.active) {
+        if (this.form.value.reminder.isActive) {
             jQuery(element).slideDown(duration);
         } else {
             jQuery(element).slideUp(duration);
@@ -108,5 +197,22 @@ export class CalendarModalComponent implements OnInit {
 
     timeOffsetToArray(): any {
         return reminderTimeOffsetToArray();
+    }
+
+    // on change 
+    onTitleChange(title: any): void {
+        if (title === "") {
+            this.error.title = "Title is required";
+            return;
+        }
+    }
+
+    onTitleKeyup() {
+        this.isTitleTouched = true;
+    }
+
+    // helper methods
+    IsNotSet(value: any): Boolean {
+        return value === undefined || value === null;
     }
 }

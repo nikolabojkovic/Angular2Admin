@@ -31,6 +31,8 @@
 }
 
 .form-group {
+  position: relative;
+
   label {
     margin-bottom: 5px;
     color: $content-text;
@@ -679,5 +681,29 @@ label.custom-checkbox {
         border-color: $primary-bg;
       }
     }
+  }
+}
+
+// custom error indicator
+.error-block {
+  position: absolute !important;
+  top: 75px !important;
+  font-size: 12px !important;
+  color: lightgrey !important;
+  top: 50px;
+}
+
+.with-error-indicator {  
+
+  .fa-exclamation-circle {
+    position: absolute;
+    top: 40px;
+    right: 5px;
+    color: $danger !important;
+    opacity: 0;
+  }
+
+  .error {
+      border-color: $danger !important;
   }
 }

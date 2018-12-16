@@ -103,5 +103,8 @@
     "simple_pie": "Simple Pie",
     "pie_with_labels": "Pie with labels",
     "donut": "Donut"
+  },
+  "calendar_events": {
+    "remind_me" : "Remind me"
   }
 }

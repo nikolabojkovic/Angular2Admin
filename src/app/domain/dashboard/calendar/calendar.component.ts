@@ -5,7 +5,6 @@ import { ModalService } from '../../shared/services/modal-service';
 import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
 import { CalendarService } from './calendar.service';
 
-// replace with real model later
 import { CalendarEvent } from '../../shared/models/calendar-event.model';
 
 import { ActionMode } from '../../shared/enums/action-mode.enum';
@@ -40,21 +39,8 @@ export class CalendarComponent implements OnInit {
   onCalendarReady(calendar): void {
     this._calendar = calendar;
     this.fatchEvents();
-
-    const ctrl = this;
-    // does not catch this line for some reason
-    jQuery(this._calendar).fullCalendar({
-      events: function(start, end, timezone, callback) {
-        ctrl._calendarService.getEvents().subscribe(result => {
-          result.data.forEach((element: CalendarEvent) => {
-            const event = CalendarEvent.fromObject(element);
-            ctrl.events.push(event);
-          });
-          callback(ctrl.events);
-        });
-      }
-    });
   }
+
 
   fatchEvents() {
     this.isLoading = true;
@@ -62,21 +48,58 @@ export class CalendarComponent implements OnInit {
     this._calendarService.getEvents().subscribe(result => {
       result.data.forEach((element: CalendarEvent) => {
         const event = CalendarEvent.fromObject(element);
-        // event.start = DateHelper.toDateOnly(event.start);
-        // event.end = DateHelper.toDateOnly(event.end);
+        event.start = DateHelper.toDateOnly(new Date(event.start));
+        event.end = DateHelper.toDateOnly(new Date(event.end));
         this.events.push(event);
       });   
 
       jQuery(this._calendar).fullCalendar('removeEvents');
       jQuery(this._calendar).fullCalendar('addEventSource', this.events);
       this.isLoading = false; 
-    });
+    }, error => this.handleError(error));
+  }
+
+  addEvent(start: any, end: any, newEvent: CalendarEvent) {
+    this.isSaving = true;
+    // with paging (per month) this id assigment have to change
+    newEvent.id = Math.max(...this.events.map(x => x.id)) + 1;
+    newEvent.start = DateHelper.toUTCDate(newEvent.start);
+    newEvent.end = DateHelper.toUTCDate(newEvent.end);
+    this._calendarService.saveEvent(newEvent).subscribe(() =>  { 
+      this.isSaving = false;
+      this.fatchEvents();
+    },
+    error => this.handleError(error));          
+    jQuery(this._calendar).fullCalendar('unselect');
+  }
+
+  updateEvent(calendarEvent: any, modifiedEvent: CalendarEvent) {
+    this.isUpdating = true;
+    modifiedEvent.start = DateHelper.toUTCDate(modifiedEvent.start);
+    modifiedEvent.end = DateHelper.toUTCDate(modifiedEvent.end);
+    this._calendarService.updateEvent(modifiedEvent).subscribe(() => {
+      this.isUpdating = false;
+      this.fatchEvents();
+    },
+    error => this.handleError(error));
+  }
+
+  deleteEvent(id: any) {
+    this.isDeleting = true;
+    this._calendarService.deleteEvent(id).subscribe(() => {
+      this.isDeleting = false;
+      this.fatchEvents();
+    },
+    error => this.handleError(error));    
   }
 
   private _onSelect(start, end): void {
     if (this._calendar !== null) {
       const calendarModal = this.modalService.open(CalendarModalComponent, { size: 'lg', backdrop: 'static' });
-      calendarModal.componentInstance.setCalendarEvent(CalendarEvent.fromObject({ start, end }));
+      calendarModal.componentInstance.setCalendarEvent(CalendarEvent.fromObject({ 
+        start: new Date(start),
+        end: new Date(end) 
+      }));
       calendarModal.result.then((newEvent) => {
         this.addEvent(start, end, newEvent);
       }, (reason) => {
@@ -110,41 +133,8 @@ export class CalendarComponent implements OnInit {
     this.updateEvent(event, modifiedEvent);
   }
 
-  private addEvent(start: any, end: any, newEvent: CalendarEvent) {
-    this.isSaving = true;
-    newEvent.id = Math.max(...this.events.map(x => x.id)) + 1;
-    newEvent.start = start;
-    newEvent.end = end;
-
-    this._calendarService.saveEvent(newEvent).subscribe(() =>  { 
-      // newEvent.start = DateHelper.toDateOnly(newEvent.start);
-      // newEvent.end = DateHelper.toDateOnly(newEvent.end);
-      jQuery(this._calendar).fullCalendar('renderEvent', newEvent, true);
-      this.events.push(newEvent);
-      this.isSaving = false;
-    });          
-    jQuery(this._calendar).fullCalendar('unselect');
-  }
-
-  private updateEvent(calendarEvent: any, modifiedEvent: CalendarEvent) {
-    this.isUpdating = true;
-    calendarEvent.title = modifiedEvent.title;
-    this._calendarService.updateEvent(modifiedEvent).subscribe(() => {
-      // calendarEvent.start = DateHelper.toDateOnly(calendarEvent.start);
-      // calendarEvent.end = DateHelper.toDateOnly(calendarEvent.end);
-      jQuery(this._calendar).fullCalendar('updateEvent', calendarEvent);
-      this.events = this.events.filter(x => x.id !== calendarEvent.id);
-      this.events.push(modifiedEvent);
-      this.isUpdating = false;
-    });
-  }
-
-  private deleteEvent(id: any) {
-    this.isDeleting = true;
-    this._calendarService.deleteEvent(id).subscribe(() => {
-      jQuery(this._calendar).fullCalendar('removeEvents', id);
-      this.events = this.events.filter(x => x.id !== id);
-      this.isDeleting = false;
-    });    
+  private handleError(error: Error) {
+    console.log(error);
+    this.isSaving = false;
   }
 }

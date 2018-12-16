@@ -228,3 +228,27 @@ a {
 .text-center {
   text-align: center;
 }
+
+.fadable-opacity {
+  -webkit-transition: opacity 0.3s ease-in;
+     -moz-transition: opacity 0.3s ease-in;
+      -ms-transition: opacity 0.3s ease-in;
+       -o-transition: opacity 0.3s ease-in;
+          transition: opacity 0.3s ease-in;
+}
+
+.fadable-border-color {
+  -webkit-transition: border-color 0.3s ease-in;
+     -moz-transition: border-color 0.3s ease-in;
+      -ms-transition: border-color 0.3s ease-in;
+       -o-transition: border-color 0.3s ease-in;
+          transition: border-color 0.3s ease-in;
+}
+
+.fade-in {
+  opacity: 1 !important;
+}
+
+.fade-out {
+  opacity: 0 !important;
+}
