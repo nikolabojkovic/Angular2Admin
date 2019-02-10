@@ -17,6 +17,7 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { ModalService }    from '../shared/services/modal-service';
 import { TodoService }     from './todo/todo.service';
 import { HttpService }     from '../shared/services/http.service';
+import { FormErrorsComponent } from '../shared/form-errors/form-errors.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { HttpService }     from '../shared/services/http.service';
     CalendarModalComponent,
     DashboardComponent,
     PieChart,
-    TodoComponent
+    TodoComponent,
+    FormErrorsComponent
   ],
   entryComponents: [
     CalendarModalComponent

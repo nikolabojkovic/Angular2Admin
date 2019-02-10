@@ -24,4 +24,5 @@
       <i class="ion-ios-close-empty remove-todo" (click)="deleteTodoItem(item.id)"></i>
     </li>
   </ul>
+  <div *ngIf="error">{{ error }}</div>
 </div>
