@@ -136,5 +136,6 @@ export class CalendarComponent implements OnInit {
   private handleError(error: Error) {
     console.log(error);
     this.isSaving = false;
+    this.isLoading = false;
   }
 }
