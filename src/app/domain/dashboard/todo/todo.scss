@@ -2,6 +2,10 @@
 
 :host /deep/.task-todo-container {
 
+  .switch-todos span {
+    cursor: pointer;
+  }
+
   input.task-todo {
     margin-bottom: 8px;
   }
@@ -33,8 +37,26 @@
           color: $input-border;
         }
       }
+      i.archive-todo {
+        position: absolute;
+        cursor: pointer;
+        top: 0px;
+        right: 32px;
+        font-size: 16px;
+        transition: color 0.2s;
+        color: rgba($input-border, 0.5);
+        visibility: hidden;
+        line-height: 42px;
+        &:hover {
+          color: $input-border;
+        }
+      }
       &:hover {
         i.remove-todo {
+          visibility: visible;
+        }
+
+        i.archive-todo {
           visibility: visible;
         }
       }
@@ -156,6 +178,14 @@
           }
         }
         i.remove-todo {
+          color: white;
+          opacity: 0.4;
+          &:hover {
+            color: white;
+            opacity: 0.95;
+          }
+        }
+        i.archive-todo {
           color: white;
           opacity: 0.4;
           &:hover {
