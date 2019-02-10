@@ -17,12 +17,14 @@ import { DateHelper } from '../../shared/helpers/date.helper';
 export class CalendarComponent implements OnInit {
 
   private _calendar: Object;
+  private userErrorMessage = "Ooops, something went wrong";
   calendarConfiguration: any;
   events: CalendarEvent[] = [];
   isLoading = false;
   isSaving = false;
   isUpdating = false;
   isDeleting = false;
+  error: string;
 
   constructor(
       private _calendarService: CalendarService,
@@ -55,7 +57,7 @@ export class CalendarComponent implements OnInit {
 
       jQuery(this._calendar).fullCalendar('removeEvents');
       jQuery(this._calendar).fullCalendar('addEventSource', this.events);
-      this.isLoading = false; 
+      this.isLoading = false;
     }, error => this.handleError(error));
   }
 
@@ -135,6 +137,10 @@ export class CalendarComponent implements OnInit {
 
   private handleError(error: Error) {
     console.log(error);
+    this.error = this.userErrorMessage;
     this.isSaving = false;
+    this.isLoading = false;
+    this.isUpdating = false;
+    this.isDeleting = false;
   }
 }

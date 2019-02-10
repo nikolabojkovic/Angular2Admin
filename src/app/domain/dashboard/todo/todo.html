@@ -1,3 +1,18 @@
+<span *ngIf="isLoading" class="loader">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Loading todos...
+</span>
+<span *ngIf="isSaving" class="loader">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Saving new todo...
+</span>
+<span *ngIf="isUpdating" class="loader">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Updating todo...
+</span>
+<span *ngIf="isDeleting" class="loader">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Deleting todo...
+</span>
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
 <div class="task-todo-container">
   <div (click)="switchTodos()" class="switch-todos">
     <span *ngIf="isActiveShown">Show archived</span>
