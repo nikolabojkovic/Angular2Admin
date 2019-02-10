@@ -10,7 +10,7 @@ import { DashboardComponent }     from './dashboard.component';
 import { PieChart }               from './pieChart';
 import { CalendarComponent }      from './calendar';
 import { CalendarModalComponent } from './calendar/calendar-modal/calendar-modal.component';
-import { Todo }                   from './todo';
+import { TodoComponent }                   from './todo';
 
 import { CalendarService } from './calendar/calendar.service';
 import { PieChartService } from './pieChart/pieChart.service';
@@ -34,7 +34,7 @@ import { HttpService }     from '../shared/services/http.service';
     CalendarModalComponent,
     DashboardComponent,
     PieChart,
-    Todo
+    TodoComponent
   ],
   entryComponents: [
     CalendarModalComponent

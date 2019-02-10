@@ -25,3 +25,15 @@ ng new My_New_Project --style=scss
 https://www.npmjs.com/package/table-dragger
 
     // "rxjs-compat": "^6.3.2",
+
+
+// dependences 
+-git 
+-nodejs
+-payton
+-bower
+-gulp
+-npm install - g sass@latest
+-npm install node-sass@latest
+-npm install -g gulp-sass
+system needs to be restarted in order to apply installed software to variable path
