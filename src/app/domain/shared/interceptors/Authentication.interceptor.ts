@@ -35,17 +35,18 @@ export class InterceptedHttp extends Http {
     }
 
     private updateUrl(req: string) {
-        return  environment.apiUrl + req;
+        // return  environment.apiUrl + req;
+        return req;
     }
 
     private getRequestOptionArgs(options?: RequestOptionsArgs): RequestOptionsArgs {
-        if (options === null) {
+        if (options === null || options === undefined) {
             options = new RequestOptions();
         }
-        if (options.headers === null) {
+        if (options.headers === null || options.headers === undefined) {
             options.headers = new Headers();
         }
-        
+
         options.headers.append('Content-Type', 'application/json');
 
         if (localStorage.getItem("Authentication") !== null) {

@@ -2,6 +2,7 @@ export class UserService {
     constructor() {}
 
     isLogedIn(): boolean {
-        return localStorage.getItem("Authentication") !== null;
+        const token = localStorage.getItem("Authentication");
+        return  token !== null && token !== undefined;
     }
 }

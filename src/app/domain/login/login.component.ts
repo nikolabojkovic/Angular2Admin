@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       this.loginService.login(values.email, values.password).subscribe(result => {
-        localStorage.setItem('Authentication', result.token);        
+        localStorage.setItem('Authentication', result.data.token);        
         this.router.navigateByUrl(this.redirectUrl);
       });
     }
