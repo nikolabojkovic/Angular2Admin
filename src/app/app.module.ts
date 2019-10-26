@@ -22,11 +22,15 @@ import { PagesModule } from './pages/pages.module';
 import { LoginModule } from './domain/login/login.module';
 import { RegisterModule } from './domain/register/register.module';
 import { DomainModule } from './domain/domain.module';
+import { AuthGuardService } from './domain/shared/services/auth-guard.service';
+import { UserService } from './domain/shared/services/user.service';
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
-  GlobalState
+  GlobalState,
+  AuthGuardService,
+  UserService
 ];
 
 export type StoreType = {

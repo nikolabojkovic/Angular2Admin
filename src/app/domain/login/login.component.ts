@@ -1,19 +1,26 @@
-import {Component} from '@angular/core';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { LoginService } from './login.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
-export class Login {
+export class LoginComponent implements OnInit {
 
-  public form:FormGroup;
-  public email:AbstractControl;
-  public password:AbstractControl;
-  public submitted:boolean = false;
+  form: FormGroup;
+  email: AbstractControl;
+  password: AbstractControl;
+  submitted: boolean = false;
+  redirectUrl = '';
 
-  constructor(fb:FormBuilder) {
+  constructor(fb: FormBuilder,
+              private loginService: LoginService,
+              private router: Router,
+              private route: ActivatedRoute
+    ) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -23,11 +30,22 @@ export class Login {
     this.password = this.form.controls['password'];
   }
 
-  public onSubmit(values:Object):void {
+  ngOnInit(): void {    
+    if (localStorage.getItem('Authentication') !== null) {
+      this.router.navigate(["backoffice/dashboard"]);
+    }
+
+    this.route.queryParams
+              .subscribe(params => this.redirectUrl = params['return'] || '/backoffice/dashboard');
+  }
+
+  onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
-      // your code goes here
-      // console.log(values);
+      this.loginService.login(values.email, values.password).subscribe(result => {
+        localStorage.setItem('Authentication', result.token);        
+        this.router.navigateByUrl(this.redirectUrl);
+      });
     }
   }
 }

@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DomainComponent } from './domain.component';
 import { ModuleWithProviders } from '@angular/core';
 import { DashboardComponent } from './dashboard';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 const routes: Routes = [
     {
@@ -11,7 +12,8 @@ const routes: Routes = [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { 
                 path: 'dashboard',  
-                component: DashboardComponent
+                component: DashboardComponent,
+                canActivate: [AuthGuardService]
             }
         ]
     },
