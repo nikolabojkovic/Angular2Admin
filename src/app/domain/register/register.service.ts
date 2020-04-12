@@ -13,7 +13,12 @@ export class RegisterService {
     }
 
     register(username: string, fullname: string, password: string): Observable<any> {
-        return this.httpService.post(this.registerEndPoint, { username, fullname, password })
+        // TODO: split full name to fist name and last in front end
+        return this.httpService.post(this.registerEndPoint, { 
+                                        username, 
+                                        firstName: fullname, 
+                                        lastName: '', 
+                                        password })
                                .map((res: Response) => res.json());
     }
 }

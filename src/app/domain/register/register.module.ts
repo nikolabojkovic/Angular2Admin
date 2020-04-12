@@ -3,7 +3,8 @@ import { CommonModule }  from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
-import { Register } from './register.component';
+import { RegisterComponent } from './register.component';
+import { RegisterService } from './register.service';
 
 @NgModule({
   imports: [
@@ -13,7 +14,10 @@ import { Register } from './register.component';
     NgaModule
   ],
   declarations: [
-    Register
+    RegisterComponent
+  ],
+  providers: [
+    RegisterService
   ]
 })
 export class RegisterModule {}

@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { LoginComponent } from './domain/login/login.component';
-import { Register } from './domain/register';
+import { RegisterComponent } from './domain/register';
 import { PageNotFound } from './domain/page-not-found/index';
 
 export const routes: Routes = [
@@ -15,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: Register
+    component: RegisterComponent
   },
   { 
     path: '**',

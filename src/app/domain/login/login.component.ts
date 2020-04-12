@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   email: AbstractControl;
   password: AbstractControl;
   submitted: boolean = false;
-  redirectUrl = '';
+  redirectUrl: string;
 
   constructor(fb: FormBuilder,
               private loginService: LoginService,
@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit {
       this.loginService.login(values.email, values.password).subscribe(result => {
         localStorage.setItem('Authentication', result.data.token);        
         this.router.navigateByUrl(this.redirectUrl);
-      });
+      },
+      err => console.error(err));
     }
   }
 }
