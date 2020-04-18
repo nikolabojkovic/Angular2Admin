@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   password: AbstractControl;
   submitted: boolean = false;
   redirectUrl: string;
+  errorMessage: string;
 
   constructor(fb: FormBuilder,
               private loginService: LoginService,
@@ -46,7 +47,23 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('Authentication', result.data.token);        
         this.router.navigateByUrl(this.redirectUrl);
       },
-      err => console.error(err));
+      err => {
+        this.errorMessage = '';
+        if (err.status === 400) {
+          const errorResponse = JSON.parse(err._body);
+          if (errorResponse.Message) {
+            this.errorMessage = errorResponse.Message;
+          } else if (errorResponse.Password) {
+            for (const passwordError in errorResponse.Password) {
+              if (errorResponse.Password.hasOwnProperty(passwordError)) {             
+                this.errorMessage += errorResponse.Password[passwordError] + ' ';
+              }
+            }
+          }
+        }
+
+        console.error(err);
+      });
     }
   }
 }
