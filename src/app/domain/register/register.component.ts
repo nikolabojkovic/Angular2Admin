@@ -18,6 +18,7 @@ export class RegisterComponent {
   repeatPassword: AbstractControl;
   passwords: FormGroup;
   redirectUrl: string;
+  errorMessage: string;
 
   submitted: boolean = false;
 
@@ -61,7 +62,25 @@ export class RegisterComponent {
         () => {
           this.router.navigateByUrl('/login');
         },
-        err => console.error(err));
+        err => {
+          this.errorMessage = '';
+          if (err.status === 400) {
+            const errorResponse = JSON.parse(err._body);
+            if (errorResponse.Message) {
+              this.errorMessage = errorResponse.Message;
+            } else if (errorResponse.Password) {
+              for (const passwordError in errorResponse.Password) {
+                if (errorResponse.Password.hasOwnProperty(passwordError)) {             
+                  this.errorMessage += errorResponse.Password[passwordError] + ' ';
+                }
+              }
+            }
+
+            return;
+          }
+  
+          console.error(err);
+        });
       // console.log(values);
     }
   }
