@@ -1,8 +1,10 @@
 <div class="auth-main">
   <div class="auth-block">
-    <h1>Sign up to Test</h1>
-    <a routerLink="/login" class="auth-link">Already have an admin account? Sign in!</a>
-
+    <h1>Sign up to BackOffice</h1>
+    <a href="/login" class="auth-link">Already have an admin account? Sign in!</a>
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 offset-2 error-message">{{errorMessage}}</div>
+    </div>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!name.valid && name.touched), 'has-success': (name.valid && name.touched)}">
         <label for="inputName3" class="col-sm-2 control-label">Name</label>

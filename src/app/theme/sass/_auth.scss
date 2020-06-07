@@ -66,6 +66,7 @@ a.forgot-pass {
   float: right;
   z-index: 2;
   position: relative;
+  cursor: pointer;
 }
 
 .auth-link {
@@ -73,6 +74,7 @@ a.forgot-pass {
   font-size: 16px;
   text-align: center;
   margin-bottom: 33px;
+  cursor: pointer;
 }
 
 .auth-sep {

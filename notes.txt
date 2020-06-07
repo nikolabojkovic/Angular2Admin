@@ -37,3 +37,6 @@ https://www.npmjs.com/package/table-dragger
 -npm install node-sass@latest
 -npm install -g gulp-sass
 system needs to be restarted in order to apply installed software to variable path
+
+// run app with production environment
+npm run start:prod

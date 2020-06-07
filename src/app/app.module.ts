@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FakeWebApi } from './domain/shared/services/fake-web-api';
+import { XHRBackend, Http, RequestOptions } from "@angular/http";
+import { InterceptedHttp } from "./domain/shared/interceptors/Authentication.interceptor";
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -22,11 +24,15 @@ import { PagesModule } from './pages/pages.module';
 import { LoginModule } from './domain/login/login.module';
 import { RegisterModule } from './domain/register/register.module';
 import { DomainModule } from './domain/domain.module';
+import { AuthGuardService } from './domain/shared/services/auth-guard.service';
+import { UserService } from './domain/shared/services/user.service';
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
-  GlobalState
+  GlobalState,
+  AuthGuardService,
+  UserService
 ];
 
 export type StoreType = {
@@ -62,7 +68,12 @@ export type StoreType = {
     RoutingModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    {
+      provide: Http,
+      useFactory: httpFactory,
+      deps: [XHRBackend, RequestOptions]
+    }
   ]
 })
 
@@ -70,4 +81,8 @@ export class AppModule {
 
   constructor(public appState: AppState) {
   }
+}
+
+export function httpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions): Http {
+    return new InterceptedHttp(xhrBackend, requestOptions);
 }
